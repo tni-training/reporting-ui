@@ -1,0 +1,17 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.Sidebar{
+  background-color: rgb(19, 19, 78);
+  color: white;
+  height: 100vh;
+  width: 120px;
+}
+.other{
+  position: relative;
+  top: 0%;
+
+
+}

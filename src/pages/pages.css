@@ -1,0 +1,56 @@
+.jobs-main{
+    display: grid;
+    grid-template-rows:  50px auto;
+}
+.jobs-first-part{
+    display: grid;
+    grid-template-columns: auto 200px;
+    padding: 12px;
+}
+.title{
+  display: grid;
+  grid-template-rows: auto auto auto auto;
+  padding:  24px 16px 12px 12px;
+}
+.jobs-button{
+    background-color: rgb(19, 19, 78);
+    color: white;
+}
+.jobs-button:hover {
+    transition: all 0.2s ease-in-out;
+    background: #fff;
+    color:black;
+  }
+  .form{
+    
+    display: grid;
+    grid-template-columns: max-content auto;
+    position: absolute;
+    left: 350px;
+    top: 125px;
+    border-radius: 6px;
+    padding: 16px;
+    box-shadow: black;
+    background-color:#ceecf5
+    
+
+  }
+  .table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  .td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
+  .save-button{
+    display: flex;
+    flex-flow: row-reverse;
+    padding: 12px 0px 0px 0px;
+  }
+.connections-table{
+  padding: 16px;
+}
