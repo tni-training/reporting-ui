@@ -1,8 +1,7 @@
 import { motion } from "framer-motion";
-import {IoLogoReact} from 'react-icons/io'
 import {  FaBattleNet, FaRocket} from 'react-icons/fa';
 import {BsArrowRightCircle, BsArrowRightCircleFill} from 'react-icons/bs';
-
+import './components.css';
 import {
 	Nav,
 	NavLink,
@@ -10,7 +9,7 @@ import {
 	NavBtn,
 	NavBtnLink,
 } from './NavLink';
-import './app.css';
+
 const SideBar = ({children}) => {
   return(<>
     <div className="main-container">
@@ -18,19 +17,19 @@ const SideBar = ({children}) => {
        
         <motion.div  className='Sidebar'>
         <FaBattleNet className="icons"/>
-        <NavLink to='/jobs' activeStyle style={{height : '30px'}}>
+        <NavLink to='/jobs' style={{height : '30px'}}>
                     Jobs
 					</NavLink>
         <BsArrowRightCircle className="icons"/>
-		<NavLink to='/sources' activeStyle style={{height : '30px'}}>
+		<NavLink to='/sources'  style={{height : '30px'}}>
 					Sources
 					</NavLink>
         <BsArrowRightCircleFill className="icons"/>
-		<NavLink to='/destination' activeStyle style={{height : '30px'}}>
+		<NavLink to='/destination' style={{height : '30px'}}>
 				    Destinations
 					</NavLink>
         <FaRocket className="icons-last"/>
-		<NavLink to='/update' activeStyle style={{height : '30px'}}>
+		<NavLink to='/update' style={{height : '30px'}}>
 					Update
 					</NavLink>
           </motion.div>

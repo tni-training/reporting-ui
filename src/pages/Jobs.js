@@ -1,12 +1,12 @@
 import react from 'react';
-import Newjobs from '../components/New-jobs';
+import Newjob from './New-job';
 import { Button } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
 
 import './pages.css';
-import React from 'react'
+import React from 'react';
 
 
 
@@ -18,49 +18,97 @@ class Jobs extends React.Component {
         };
       }
     entry_forms=()=>{
-        {console.log(this.state.form)}
         this.setState({form: !this.state.form})
     }
+    save=()=>{
+        this.setState({form: false})
+        // Here write code for save input
+    }
+    cancel=()=>{
+        this.setState({form: false})
+      }
     render(){
     
     return (
         <div className='jobs-main'>
-        <div className='jobs-first-part'>
-        <h1>Jobs</h1>
-        <Button
-             variant='contained' 
-             color='primary'
-             size='small'  
-            startIcon ={<AddIcon/>}
-             onClick={this.entry_forms}>New Connections</Button>
-        </div>
-        <div className='jobs-table'>
+            <div className='jobs-first-part'>
+                <h1>Jobs</h1>
+                <div>
+                <Button
+                variant='contained' 
+                color='primary'
+                size='small'  
+                startIcon ={<AddIcon/>}
+                onClick={this.entry_forms}>New Job</Button>
+                </div>
+            </div>
+            
+            <div className='jobs-table'>
             {this.state.form &&
-            <Newjobs/> 
+            <Newjob save={this.save} cancel={this.cancel}/> 
             } 
           
-        {/* code for table after backend connect in systematic way this is dummy one */}
-        <table className='table'>
+        <table className={this.state.form ? 'table1' : 'table'}>
+            <tbody>
         <tr>    
-            <th>Name</th>
-            <th>Connector</th>
-            <th>Destination</th>
-            <th>Last Sync</th>
+            <th>Action</th>
+            <th>Submission Id</th>
+            <th>Message</th>
+            <th>Jar params</th>
+            <th>Server Spark Version</th>
+            <th>Is Accepted</th>
             <th>Status</th>
-            <th>Edit/Delete</th>
+            <th>Is Completed</th>
+            <th>Created At</th>
+            <th>Modify At</th>
+            <th><EditIcon/></th>
+            <th><DeleteIcon/></th>
         </tr>
-        <tr>
-    <td>ABC</td>
-    <td>XYZ</td>
-    <td>abc</td>
-    <td>xyz</td>
-    <td><input type="checkbox"/></td>
-    <td><EditIcon/>&nbsp;&nbsp;<DeleteIcon/>
-        </td>
-        {/* <Button variant="outlined" startIcon={<EditIcon />} ></Button>
-        <Button variant="outlined" startIcon={<DeleteIcon />}></Button> */}
-  </tr>
 
+        {/* code for table after backend connect in systematic way this is dummy one */}
+        <tr>    
+            <td className='entry'>XYZ</td>
+            <td className='entry'>123</td>
+            <td className='entry'>Hello</td>
+            <td className='entry'>Word</td>
+            <td className='entry'>2.12</td>
+            <td className='entry'>2</td>
+            <td className='entry'>Process</td>
+            <td className='entry'>2</td>
+            <td className='entry'>......</td>
+            <td className='entry'>.....</td>
+            <td className='entry'><EditIcon/></td>
+            <td className='entry'><DeleteIcon/></td>
+        </tr>
+        <tr>    
+            <td className='entry'>XYZ</td>
+            <td className='entry'>123</td>
+            <td className='entry'>Hello</td>
+            <td className='entry'>Word</td>
+            <td className='entry'>2.12</td>
+            <td className='entry'>2</td>
+            <td className='entry'>Process</td>
+            <td className='entry'>2</td>
+            <td className='entry'>......</td>
+            <td className='entry'>.....</td>
+            <td className='entry'><EditIcon/></td>
+            <td className='entry'><DeleteIcon/></td>
+        </tr>
+        <tr>    
+            <td className='entry'>XYZ</td>
+            <td className='entry'>123</td>
+            <td className='entry'>Hello</td>
+            <td className='entry'>Word</td>
+            <td className='entry'>2.12</td>
+            <td className='entry'>2</td>
+            <td className='entry'>Process</td>
+            <td className='entry'>2</td>
+            <td className='entry'>......</td>
+            <td className='entry'>.....</td>
+            <td className='entry'><EditIcon/></td>
+            <td className='entry'><DeleteIcon/></td>
+        </tr>
+        </tbody>
         </table>
         </div>
         </div>
