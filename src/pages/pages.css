@@ -51,3 +51,8 @@
 .connections-table{
   padding: 16px;
 }
+.table-delete{
+  display: flex;
+  flex-direction: row-reverse;
+}
+

@@ -1,34 +1,112 @@
 import react from 'react';
 import Newjob from './New-job';
-import { Button } from '@mui/material';
+import Editjob from './Edit-job';
+import { Alert, Button } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
+import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
+
+
 
 import './pages.css';
 import React from 'react';
+const axios = require('axios').default;
 
-
+const columns= [
+  { field: 'action', headerName: 'Action',editable: true},
+  { field: 'submissionId', headerName: 'Submission ID',width:110,editable: true },
+  { field: 'message', headerName: 'Message' },
+  { field: 'jarParams', headerName: 'Jar Params'},
+  { field: 'serverSparkVersion', headerName: 'Server Spark Version',editable: true},
+  { field: 'isAccepted', headerName: 'Is Accepted',editable: true},
+  { field: 'status', headerName: 'Status',editable: true },
+  { field: 'isCompleted', headerName: 'Is Completed',editable: true},
+  { field: 'createdAt', headerName: 'Created At',width:170,editable: true },
+  { field: 'modifiedAt', headerName: 'Modify At',width:170,editable: true},
+];
 
 class Jobs extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
           form : false,
+          formEdit : false,
+          table_length: 0,
+          table_data : [],
+          arr: "",
+          selected_ids :"",
+  
         };
       }
+    componentDidMount() {
+        axios.get('http://localhost:8081/alljobs')
+          .then(response => {
+            const Data = response.data;
+            this.setState({ table_data : Data });
+          })
+          this.render();
+      }
+      componentDidUpdate() {
+        axios.get('http://localhost:8081/alljobs')
+        .then(response => {
+          const Data = response.data;
+          this.setState({ table_data : Data });
+        })
+      }
+
     entry_forms=()=>{
         this.setState({form: !this.state.form})
     }
     save=()=>{
         this.setState({form: false})
-        // Here write code for save input
+        this.setState({formEdit: false})
+        this.componentDidUpdate();  
     }
+ 
+  
+    delete_selected_id=()=>{ 
+   
+    var answer = window.confirm("Are you sure you want to DELETE the selected data?");
+    if (answer) {
+      for (var i=0; i < this.state.selected_ids.length; i++) {
+        axios.delete(`http://localhost:8081/removejob?id=${(this.state.selected_ids[i])}`)
+        .then(res => res.data);
+        }
+    }
+    else {
+      alert("Your request to delete the data is abort");
+    }
+    this.componentDidUpdate();
+    } 
+    edit_selected_id=()=>{
+      if(this.state.selected_ids.length==1){
+      this.setState({formEdit: !this.state.formEdit})
+
+      this.setState({ arr : this.state.table_data.find((o, i) => {
+        if (o.id == this.state.selected_ids) {
+            return this.state.table_data[i];
+        }
+    })
+  })
+      }
+      else{
+      if(this.state.selected_ids.length==0){
+        alert("Please select one row for editing.")
+      }
+      else{
+        alert("Please select only one row for editing.")
+      }
+      }
+    }
+    
     cancel=()=>{
         this.setState({form: false})
-      }
-    render(){
+        this.setState({formEdit: false})
+    }
     
+    render(){
+      console.log("componente render")
     return (
         <div className='jobs-main'>
             <div className='jobs-first-part'>
@@ -42,74 +120,53 @@ class Jobs extends React.Component {
                 onClick={this.entry_forms}>New Job</Button>
                 </div>
             </div>
-            
             <div className='jobs-table'>
             {this.state.form &&
             <Newjob save={this.save} cancel={this.cancel}/> 
             } 
-          
-        <table className={this.state.form ? 'table1' : 'table'}>
-            <tbody>
-        <tr>    
-            <th>Action</th>
-            <th>Submission Id</th>
-            <th>Message</th>
-            <th>Jar params</th>
-            <th>Server Spark Version</th>
-            <th>Is Accepted</th>
-            <th>Status</th>
-            <th>Is Completed</th>
-            <th>Created At</th>
-            <th>Modify At</th>
-            <th><EditIcon/></th>
-            <th><DeleteIcon/></th>
-        </tr>
-
-        {/* code for table after backend connect in systematic way this is dummy one */}
-        <tr>    
-            <td className='entry'>XYZ</td>
-            <td className='entry'>123</td>
-            <td className='entry'>Hello</td>
-            <td className='entry'>Word</td>
-            <td className='entry'>2.12</td>
-            <td className='entry'>2</td>
-            <td className='entry'>Process</td>
-            <td className='entry'>2</td>
-            <td className='entry'>......</td>
-            <td className='entry'>.....</td>
-            <td className='entry'><EditIcon/></td>
-            <td className='entry'><DeleteIcon/></td>
-        </tr>
-        <tr>    
-            <td className='entry'>XYZ</td>
-            <td className='entry'>123</td>
-            <td className='entry'>Hello</td>
-            <td className='entry'>Word</td>
-            <td className='entry'>2.12</td>
-            <td className='entry'>2</td>
-            <td className='entry'>Process</td>
-            <td className='entry'>2</td>
-            <td className='entry'>......</td>
-            <td className='entry'>.....</td>
-            <td className='entry'><EditIcon/></td>
-            <td className='entry'><DeleteIcon/></td>
-        </tr>
-        <tr>    
-            <td className='entry'>XYZ</td>
-            <td className='entry'>123</td>
-            <td className='entry'>Hello</td>
-            <td className='entry'>Word</td>
-            <td className='entry'>2.12</td>
-            <td className='entry'>2</td>
-            <td className='entry'>Process</td>
-            <td className='entry'>2</td>
-            <td className='entry'>......</td>
-            <td className='entry'>.....</td>
-            <td className='entry'><EditIcon/></td>
-            <td className='entry'><DeleteIcon/></td>
-        </tr>
-        </tbody>
-        </table>
+            {this.state.formEdit &&<div>
+            <Editjob save={this.save}
+             cancel={this.cancel} 
+             edit={this.state.formEdit} 
+             action= {this.state.arr.action}
+             submission_id={this.state.arr.submissionId}
+             message={this.state.arr.message}
+             jar_params={this.state.arr.jarParams}
+             server_spark_version={this.state.arr.serverSparkVersion}
+             status={this.state.arr.status}
+             is_accepted={this.state.arr.isAccepted}
+             is_completed={this.state.arr.isCompleted}
+             id={this.state.selected_ids[0]}/> 
+            </div>
+            } 
+        <div className= {this.state.form ? 'table1' : 'table'}>
+        <div className='table-delete'>
+        <Button size='small'  
+                startIcon ={<DeleteIcon/>}
+                onClick={this.delete_selected_id}
+                >Delete</Button>
+        <Button size='small'  
+                startIcon ={<EditIcon/>}
+                onClick={this.edit_selected_id}>Edit</Button>
+        </div>
+        <div style={{ height: 420, width: '100%' }}>         
+        <DataGrid
+        rows={this.state.table_data}
+        columns={columns}
+        pageSize={5}
+        rowsPerPageOptions={[]}
+        checkboxSelection
+        onSelectionModelChange={(ids) => {
+          const selectedIDs = ids;
+          this.setState({selected_ids: selectedIDs})
+        }}
+        UnselectAllCells 
+        disableSelectionOnClick={true}
+        // editMode="row"
+        // experimentalFeatures={{ newEditingApi: true }}
+        />
+        </div>
+      </div>
         </div>
         </div>
     );
