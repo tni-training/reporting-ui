@@ -108,7 +108,7 @@ class Jobs extends React.Component {
             const Data = response.data;
             this.setState({ table_data : Data }); 
         })
-            this.update();
+             this.update();
             alert("Row is deleted successsfully.")
            }  
           else {
