@@ -3,14 +3,12 @@ import Jobs from './../Jobs';
 
 afterEach(cleanup);
 
-//Test to check text elements
 test('renders jobs', () => {
   render(<Jobs />);
   const linkElement = screen.getByText(/Jobs/i);
   expect(linkElement).toBeInTheDocument();
 });
 
-//Test to check button 
 test('check the rendering of NEW JOB button', () => {
   render(<Jobs />);
   const linkElement = screen.getAllByRole('button');

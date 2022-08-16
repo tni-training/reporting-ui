@@ -6,6 +6,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
 import { DataGrid} from '@mui/x-data-grid';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 import './pages.css';
 
 const axios = require('axios').default;
@@ -30,6 +32,8 @@ function Jobs(props) {
     const [table_data,setTable_data]= useState([]);
     const [arr,setArr]= useState("");
     const [selected_ids,setSelected_ids]= useState("");
+    const [snackbar, setSnackbar] = React.useState(false);
+    const handleCloseSnackbar = () => setSnackbar(false);
     
     useEffect(() => {
         axios.get('http://localhost:8081/alljobs')
@@ -42,6 +46,7 @@ function Jobs(props) {
     const entry_forms=()=>{
         setForm(!form)
     }
+
     const save=()=>{
         setForm(false);
         axios.get('http://localhost:8081/alljobs')
@@ -49,10 +54,9 @@ function Jobs(props) {
             const Data = response.data;
             setTable_data(Data);
           })
-        
-        alert("Job is created successfully.");
-         
+          setSnackbar({ children: 'New Job added successfully.', severity: 'success' });   
     }
+
     const save_changes=()=>{
         setFormEdit(false)
         axios.get('http://localhost:8081/alljobs')
@@ -61,8 +65,9 @@ function Jobs(props) {
             setTable_data(Data);
           })
           update();
-          alert("Row is edited successfully.");
+          setSnackbar({ children: 'Changes saved successfully.', severity: 'success' });
     }
+
     const update=()=>{
         axios.get('http://localhost:8081/alljobs')
         .then(response => {
@@ -70,10 +75,12 @@ function Jobs(props) {
           setTable_data(Data);
         })
     }
+
     const cancel=()=>{
         setForm(false)
         setFormEdit(false)
     }
+
     const edit_selected_id=()=>{
         if(selected_ids.length==1){
         setFormEdit(!formEdit)
@@ -93,6 +100,7 @@ function Jobs(props) {
         }
         }
       }
+
       const delete_selected_id=()=>{
         if(selected_ids.length!=0){
           var answer = window.confirm("Are you sure you want to DELETE the selected data?");
@@ -105,11 +113,10 @@ function Jobs(props) {
             setTable_data(Data); 
         })
             update();
-            alert("Row is deleted successsfully.")
+            setSnackbar({ children: 'Selected rows deleted successfully.', severity: 'success' });
            }  
           else {
           alert("Your request to delete the data is abort");
-
           }
         } 
         else{
@@ -130,6 +137,7 @@ function Jobs(props) {
                 onClick={entry_forms}>New Job</Button>
                 </div>
             </div>
+
             {form &&
             <Newjob save={save} cancel={cancel}/>}
              
@@ -149,32 +157,44 @@ function Jobs(props) {
             </div>
             } 
              
-             <div className='table-delete'>
-        <Button size='small'  
+            <div className='table-delete'>
+            <Button size='small'  
                 startIcon ={<DeleteIcon/>}
-                onClick={delete_selected_id}
-                >Delete</Button>
-        <Button size='small'  
+                onClick={delete_selected_id}>
+                Delete
+            </Button>
+            <Button size='small'  
                 startIcon ={<EditIcon/>}
-                onClick={edit_selected_id}>Edit</Button>
-        </div>
-           <div style={{ height: 420, width: '100%' }}>
-            <DataGrid
-        rows={table_data}
-        columns={columns}
-        pageSize={5}
-        rowsPerPageOptions={[5]}
-        checkboxSelection
-        onSelectionModelChange={(ids) => {
-          const selectedIDs = ids;
-          setSelected_ids(selectedIDs)
-        }}
-        UnselectAllCells 
-        disableSelectionOnClick={true}
-        />
-           </div>
-           </div>
-    );
-};
+                onClick={edit_selected_id}>
+                Edit
+            </Button>
+            </div>
 
+            <div style={{ height: 420, width: '100%' }}>
+            <DataGrid
+            rows={table_data}
+            columns={columns}
+            pageSize={5}
+            rowsPerPageOptions={[5]}
+            checkboxSelection
+            onSelectionModelChange={(ids) => {
+            const selectedIDs = ids;
+            setSelected_ids(selectedIDs)
+            }}
+            UnselectAllCells 
+            disableSelectionOnClick={true}
+            />
+           {snackbar && (
+           <Snackbar
+           open
+           anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+           onClose={handleCloseSnackbar}
+           autoHideDuration={3000}>
+          <Alert {...snackbar} onClose={handleCloseSnackbar} ></Alert>
+          </Snackbar>
+          )}
+          </div>
+        </div>
+      );
+}
 export default Jobs;
