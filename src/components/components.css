@@ -1,6 +1,6 @@
 .main-container{
     display: grid;
-    grid-template-columns: 120px auto;
+    grid-template-columns: 150px auto;
   }
   .icons{
     height: 60px;
@@ -16,5 +16,23 @@
   }
   .icons-names{
     height : '30px';
+  }
+ .navlink{
+  color: #808080;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-decoration: none;
+  padding: 0 1rem;
+  height: 100%;
+  cursor: pointer;
+ }
+.navlink :hover {
+    transition: all 0.2s ease-in-out;
+    background: #fff;
+    color: #808080;
+  }
+.navlink .active {
+    color: #000000;
   }
  

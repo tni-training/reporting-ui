@@ -77,7 +77,7 @@ class Editjob extends React.Component {
   return (
      <div className='form'>
       <div className='form-first-part'>
-        <div className='form-title'>JOB</div>
+        <div className='form-title'><h1>JOB</h1></div>
         <CloseIcon onClick={this.props.cancel}/>
       </div>
       <div className='form-second-part'>

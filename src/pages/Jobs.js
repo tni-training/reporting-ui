@@ -1,16 +1,13 @@
-import react from 'react';
 import Newjob from './New-job';
 import Editjob from './Edit-job';
 import { Alert, Button } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
-import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
-
-
-
+import { DataGrid} from '@mui/x-data-grid';
 import './pages.css';
 import React from 'react';
+
 const axios = require('axios').default;
 
 const columns= [
@@ -36,7 +33,6 @@ class Jobs extends React.Component {
           table_data : [],
           arr: "",
           selected_ids :"",
-  
         };
       }
     componentDidMount() {
@@ -45,72 +41,91 @@ class Jobs extends React.Component {
             const Data = response.data;
             this.setState({ table_data : Data });
           })
-          this.render();
       }
-      componentDidUpdate() {
-        axios.get('http://localhost:8081/alljobs')
-        .then(response => {
-          const Data = response.data;
-          this.setState({ table_data : Data });
-        })
-      }
-
+   
     entry_forms=()=>{
         this.setState({form: !this.state.form})
     }
     save=()=>{
         this.setState({form: false})
+        axios.get('http://localhost:8081/alljobs')
+          .then(response => {
+            const Data = response.data;
+            this.setState({ table_data : Data });
+          })
+        
+        alert("Job is created successfully.");
+         
+    }
+    save_changes=()=>{
         this.setState({formEdit: false})
-        this.componentDidUpdate();  
+        axios.get('http://localhost:8081/alljobs')
+          .then(response => {
+            const Data = response.data;
+            this.setState({ table_data : Data });
+          })
+          this.update();
+          alert("Row is edited successfully.");
     }
- 
-  
-    delete_selected_id=()=>{ 
-   
-    var answer = window.confirm("Are you sure you want to DELETE the selected data?");
-    if (answer) {
-      for (var i=0; i < this.state.selected_ids.length; i++) {
-        axios.delete(`http://localhost:8081/removejob?id=${(this.state.selected_ids[i])}`)
-        .then(res => res.data);
-        }
+    update=()=>{
+        axios.get('http://localhost:8081/alljobs')
+        .then(response => {
+          const Data = response.data;
+          this.setState({ table_data : Data });
+        })
     }
-    else {
-      alert("Your request to delete the data is abort");
-    }
-    this.componentDidUpdate();
-    } 
-    edit_selected_id=()=>{
-      if(this.state.selected_ids.length==1){
-      this.setState({formEdit: !this.state.formEdit})
-
-      this.setState({ arr : this.state.table_data.find((o, i) => {
-        if (o.id == this.state.selected_ids) {
-            return this.state.table_data[i];
-        }
-    })
-  })
-      }
-      else{
-      if(this.state.selected_ids.length==0){
-        alert("Please select one row for editing.")
-      }
-      else{
-        alert("Please select only one row for editing.")
-      }
-      }
-    }
-    
     cancel=()=>{
         this.setState({form: false})
         this.setState({formEdit: false})
     }
-    
-    render(){
-      console.log("componente render")
-    return (
+    edit_selected_id=()=>{
+        if(this.state.selected_ids.length==1){
+        this.setState({formEdit: !this.state.formEdit})
+        this.setState({ arr : this.state.table_data.find((o, i) => {
+          if (o.id == this.state.selected_ids) {
+              return this.state.table_data[i];
+          }
+      })
+    })
+        }
+        else{
+        if(this.state.selected_ids.length==0){
+          alert("Please select one row for editing.")
+        }
+        else{
+          alert("Please select only one row for editing.")
+        }
+        }
+      }
+      delete_selected_id=()=>{
+        if(this.state.selected_ids.length!=0){
+          var answer = window.confirm("Are you sure you want to DELETE the selected data?");
+           if (answer) {
+            axios.delete(`http://localhost:8081/removejob?ids=${(this.state.selected_ids)}`)
+            .then(res => console.log(res.data)); 
+            axios.get('http://localhost:8081/alljobs')
+           .then(response => {
+            const Data = response.data;
+            this.setState({ table_data : Data }); 
+        })
+            this.update();
+            alert("Row is deleted successsfully.")
+           }  
+          else {
+          alert("Your request to delete the data is abort");
+
+          }
+        } 
+        else{
+            alert("Please select atleast one row.") 
+        }
+    }
+      render(){
+        console.log("re-render")
+        return(
         <div className='jobs-main'>
             <div className='jobs-first-part'>
-                <h1>Jobs</h1>
+            <h1>Jobs</h1>
                 <div>
                 <Button
                 variant='contained' 
@@ -120,13 +135,11 @@ class Jobs extends React.Component {
                 onClick={this.entry_forms}>New Job</Button>
                 </div>
             </div>
-            <div className='jobs-table'>
             {this.state.form &&
-            <Newjob save={this.save} cancel={this.cancel}/> 
-            } 
+            <Newjob save={this.save} cancel={this.cancel}/>}
             {this.state.formEdit &&<div>
-            <Editjob save={this.save}
-             cancel={this.cancel} 
+            <Editjob save={this.save_changes}
+             cancel={this.cancel}
              edit={this.state.formEdit} 
              action= {this.state.arr.action}
              submission_id={this.state.arr.submissionId}
@@ -139,8 +152,7 @@ class Jobs extends React.Component {
              id={this.state.selected_ids[0]}/> 
             </div>
             } 
-        <div className= {this.state.form ? 'table1' : 'table'}>
-        <div className='table-delete'>
+             <div className='table-delete'>
         <Button size='small'  
                 startIcon ={<DeleteIcon/>}
                 onClick={this.delete_selected_id}
@@ -149,12 +161,12 @@ class Jobs extends React.Component {
                 startIcon ={<EditIcon/>}
                 onClick={this.edit_selected_id}>Edit</Button>
         </div>
-        <div style={{ height: 420, width: '100%' }}>         
-        <DataGrid
+           <div style={{ height: 420, width: '100%' }}>
+            <DataGrid
         rows={this.state.table_data}
         columns={columns}
         pageSize={5}
-        rowsPerPageOptions={[]}
+        rowsPerPageOptions={[5]}
         checkboxSelection
         onSelectionModelChange={(ids) => {
           const selectedIDs = ids;
@@ -162,17 +174,10 @@ class Jobs extends React.Component {
         }}
         UnselectAllCells 
         disableSelectionOnClick={true}
-        // editMode="row"
-        // experimentalFeatures={{ newEditingApi: true }}
         />
-        </div>
-      </div>
-        </div>
-        </div>
-    );
+           </div>
+           </div>
+        )
+      }
     }
-}
-
-
 export default Jobs;
-
