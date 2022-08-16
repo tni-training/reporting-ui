@@ -1,5 +1,7 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, cleanup } from '@testing-library/react';
 import Sources from './../Sources';
+
+afterEach(cleanup);
 
 test('renders sources', () => {
   render(<Sources />);

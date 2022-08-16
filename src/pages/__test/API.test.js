@@ -49,7 +49,6 @@ test("Put call testing",async()=>{
       status : "completed", 
       isCompleted: 1,
       id : 1,
-
   });
   expect(response.status).toEqual(200);
 });

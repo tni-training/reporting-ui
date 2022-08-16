@@ -1,5 +1,7 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, cleanup} from '@testing-library/react';
 import Editjob from '../Edit-job';
+
+afterEach(cleanup);
 
 test('renders Edit-job', () => {
   render(<Editjob/>);
