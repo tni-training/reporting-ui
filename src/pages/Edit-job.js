@@ -5,6 +5,11 @@ import CloseIcon from '@mui/icons-material/Close';
 import './New-job.css';
 const axios = require('axios').default;
 
+export const editUser = async (newEntry) => {
+  return await axios.put('http://localhost:8081/updatejob', newEntry)
+};
+
+
 function EditJob(props) {
     
     const [Action,setAction]=useState(props.action);
@@ -44,10 +49,10 @@ function EditJob(props) {
         setIs_completed(myInt)
       }
       
-      const save_changes=()=>{
+      const save_changes=async()=>{
         var answer = window.confirm("Are you sure you want to make changes in the selected row?");
         if (answer) {
-        axios.put('http://localhost:8081/updatejob',{
+        await axios.put('http://localhost:8081/updatejob',{
         action: Action,
         submissionId:Submission_id, 
         message: Message, 

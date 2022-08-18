@@ -24,11 +24,19 @@ const columns= [
   { field: 'modifiedAt', headerName: 'Modify At',width:170,editable: true},
 ];
 
+export const fetchUsers = async () => {
+    const res =  await axios.get("http://localhost:8081/alljobs");
+    return (res);
+};
+export const deleteUsers = async(ids) => {
+  const res =  await axios.delete(`http://localhost:8081/removejob?ids=${ids}`);
+  return (res);
+};
+
 function Jobs(props) {
 
     const [form,setForm]= useState(false);
     const [formEdit,setFormEdit]= useState(false);
-    const [table_length,setTable_length]= useState(0);
     const [table_data,setTable_data]= useState([]);
     const [arr,setArr]= useState("");
     const [selected_ids,setSelected_ids]= useState("");
@@ -47,35 +55,19 @@ function Jobs(props) {
         setForm(!form)
     }
 
-    const save=()=>{
+    const save= async()=>{
         setForm(false);
-        axios.get('http://localhost:8081/alljobs')
-          .then(response => {
-            const Data = response.data;
-            setTable_data(Data);
-          })
-          setSnackbar({ children: 'New Job added successfully.', severity: 'success' });   
+        const update = await fetchUsers();
+        setTable_data(update.data);
+        setSnackbar({ children: 'New Job added successfully.', severity: 'success' });   
     }
 
-    const save_changes=()=>{
+    const save_changes=async()=>{
         setFormEdit(false)
-        axios.get('http://localhost:8081/alljobs')
-          .then(response => {
-            const Data = response.data;
-            setTable_data(Data);
-          })
-          update();
-          setSnackbar({ children: 'Changes saved successfully.', severity: 'success' });
+        const update = await fetchUsers();
+        setTable_data(update.data);
+        setSnackbar({ children: 'Changes saved successfully.', severity: 'success' });
     }
-
-    const update=()=>{
-        axios.get('http://localhost:8081/alljobs')
-        .then(response => {
-          const Data = response.data;
-          setTable_data(Data);
-        })
-    }
-
     const cancel=()=>{
         setForm(false)
         setFormEdit(false)
@@ -101,18 +93,17 @@ function Jobs(props) {
         }
       }
 
-      const delete_selected_id=()=>{
+      const delete_selected_id=async()=>{
         if(selected_ids.length!=0){
           var answer = window.confirm("Are you sure you want to DELETE the selected data?");
            if (answer) {
-            axios.delete(`http://localhost:8081/removejob?ids=${(selected_ids)}`)
+            await axios.delete(`http://localhost:8081/removejob?ids=${(selected_ids)}`)
             .then(res => console.log(res.data)); 
-            axios.get('http://localhost:8081/alljobs')
+            await axios.get('http://localhost:8081/alljobs')
            .then(response => {
             const Data = response.data;
             setTable_data(Data); 
         })
-            update();
             setSnackbar({ children: 'Selected rows deleted successfully.', severity: 'success' });
            }  
           else {

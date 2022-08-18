@@ -5,6 +5,9 @@ import CloseIcon from '@mui/icons-material/Close';
 import './New-job.css';
 const axios = require('axios').default;
 
+export const addUsers = async () => {
+  return await axios.post("http://localhost:8081/addjob");
+};
 function NewJob(props) {
     
     const [Action,setAction]=useState(null);
@@ -43,8 +46,8 @@ function NewJob(props) {
         var myInt = parseInt(e.target.value);
         setIs_completed(myInt)
       }
-      const save=()=>{
-        axios.post('http://localhost:8081/addjob',{
+      const save=async()=>{
+        await axios.post('http://localhost:8081/addjob',{
         action: Action,
         submissionId:Submission_id, 
         message: Message, 
