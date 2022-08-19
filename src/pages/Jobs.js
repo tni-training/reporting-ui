@@ -8,6 +8,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { DataGrid} from '@mui/x-data-grid';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import { Get, Delete} from './API';
 import './pages.css';
 
 const axios = require('axios').default;
@@ -23,15 +24,6 @@ const columns= [
   { field: 'createdAt', headerName: 'Created At',width:170,editable: true },
   { field: 'modifiedAt', headerName: 'Modify At',width:170,editable: true},
 ];
-
-export const fetchUsers = async () => {
-    const res =  await axios.get("http://localhost:8081/alljobs");
-    return (res);
-};
-export const deleteUsers = async(ids) => {
-  const res =  await axios.delete(`http://localhost:8081/removejob?ids=${ids}`);
-  return (res);
-};
 
 function Jobs(props) {
 
@@ -57,14 +49,14 @@ function Jobs(props) {
 
     const save= async()=>{
         setForm(false);
-        const update = await fetchUsers();
+        const update = await Get();
         setTable_data(update.data);
         setSnackbar({ children: 'New Job added successfully.', severity: 'success' });   
     }
 
     const save_changes=async()=>{
         setFormEdit(false)
-        const update = await fetchUsers();
+        const update = await Get();
         setTable_data(update.data);
         setSnackbar({ children: 'Changes saved successfully.', severity: 'success' });
     }
@@ -96,16 +88,12 @@ function Jobs(props) {
       const delete_selected_id=async()=>{
         if(selected_ids.length!=0){
           var answer = window.confirm("Are you sure you want to DELETE the selected data?");
-           if (answer) {
-            await axios.delete(`http://localhost:8081/removejob?ids=${(selected_ids)}`)
-            .then(res => console.log(res.data)); 
-            await axios.get('http://localhost:8081/alljobs')
-           .then(response => {
-            const Data = response.data;
-            setTable_data(Data); 
-        })
-            setSnackbar({ children: 'Selected rows deleted successfully.', severity: 'success' });
-           }  
+            if(answer){
+              await Delete(selected_ids);
+              const update = await Get();
+              setTable_data(update.data);
+              setSnackbar({ children: 'Selected rows deleted successfully.', severity: 'success' });
+            } 
           else {
           alert("Your request to delete the data is abort");
           }
@@ -113,7 +101,7 @@ function Jobs(props) {
         else{
             alert("Please select atleast one row.") 
         }
-    }
+      }
 
     return (
         <div className='jobs-main'>

@@ -2,12 +2,10 @@ import React, { useState } from 'react';
 import { Button } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import CloseIcon from '@mui/icons-material/Close';
+import {  Post } from './API';
 import './New-job.css';
 const axios = require('axios').default;
 
-export const addUsers = async () => {
-  return await axios.post("http://localhost:8081/addjob");
-};
 function NewJob(props) {
     
     const [Action,setAction]=useState(null);
@@ -46,23 +44,18 @@ function NewJob(props) {
         var myInt = parseInt(e.target.value);
         setIs_completed(myInt)
       }
-      const save=async()=>{
-        await axios.post('http://localhost:8081/addjob',{
-        action: Action,
-        submissionId:Submission_id, 
-        message: Message, 
-        jarParams:Jar_params, 
-        serverSparkVersion:Server_Spark_Version, 
-        isAccepted:Is_accepted,
-        status:Status, 
-        isCompleted:Is_completed,
-    })
-        .then(function (response) {
-          console.log(response);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+      const save=async()=>{       
+        const addUser = {
+          action: Action,
+          submissionId:Submission_id, 
+          message: Message, 
+          jarParams:Jar_params, 
+          serverSparkVersion:Server_Spark_Version, 
+          isAccepted:Is_accepted,
+          status:Status, 
+          isCompleted:Is_completed,
+        }
+        await Post(addUser);
         props.save();
       }
 

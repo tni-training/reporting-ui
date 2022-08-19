@@ -2,13 +2,9 @@ import React, { useState } from 'react';
 import { Button } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import CloseIcon from '@mui/icons-material/Close';
+import {  Put } from './API';
 import './New-job.css';
 const axios = require('axios').default;
-
-export const editUser = async (newEntry) => {
-  return await axios.put('http://localhost:8081/updatejob', newEntry)
-};
-
 
 function EditJob(props) {
     
@@ -52,23 +48,18 @@ function EditJob(props) {
       const save_changes=async()=>{
         var answer = window.confirm("Are you sure you want to make changes in the selected row?");
         if (answer) {
-        await axios.put('http://localhost:8081/updatejob',{
-        action: Action,
-        submissionId:Submission_id, 
-        message: Message, 
-        jarParams:Jar_params, 
-        serverSparkVersion:Server_Spark_Version, 
-        isAccepted:Is_accepted,
-        status:Status, 
-        isCompleted:Is_completed,
-        id: props.id,
-    })
-        .then(function (response) {
-          console.log(response);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+        const newEntry = {
+          action: Action,
+          submissionId:Submission_id, 
+          message: Message, 
+          jarParams:Jar_params, 
+          serverSparkVersion:Server_Spark_Version, 
+          isAccepted:Is_accepted,
+          status:Status, 
+          isCompleted:Is_completed,
+          id: props.id,
+        }
+        await Put(newEntry); 
         props.save();
       }
       else{

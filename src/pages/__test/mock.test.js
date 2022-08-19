@@ -1,11 +1,9 @@
 import axios from "axios";
-import { fetchUsers, deleteUsers } from './../Jobs';
-import { addUsers } from './../New-job';
-import { editUser } from './../Edit-job';
+import { Get, Post, Delete, Put} from './../API';
 
 jest.mock("axios");
 
-describe("fetchUsers", () => {
+describe("GetUsers", () => {
   describe("when API call is successful", () => {
     it("should return users list", async () => {
 
@@ -22,7 +20,7 @@ describe("fetchUsers", () => {
             }]
         axios.get.mockResolvedValueOnce(users);
 
-        const result = await fetchUsers();
+        const result = await Get();
         expect(axios.get).toHaveBeenCalledWith("http://localhost:8081/alljobs");
         expect(result).toEqual(users);
     })
@@ -33,7 +31,7 @@ describe("addUsers", () => {
     describe("when API call is successful", () => {
       it("should return users list", async () => {
   
-          const users = [{ 
+          const users = { 
                   action: "ABC",
                   submissionId: "456", 
                   message: "Hey", 
@@ -43,11 +41,11 @@ describe("addUsers", () => {
                   status : "process", 
                   isCompleted: 1,
                   id: 2,  
-              }]
+              }
           axios.post.mockResolvedValueOnce(users);
   
-          const result = await addUsers();
-          expect(axios.post).toHaveBeenCalledWith("http://localhost:8081/addjob");
+          const result = await Post(users);
+          expect(axios.post).toHaveBeenCalledWith("http://localhost:8081/addjob", users);
           expect(result).toEqual(users);
       })
     })
@@ -60,7 +58,7 @@ describe("addUsers", () => {
         const ids = [1,2,3];
         
         axios.delete.mockResolvedValueOnce(ids);
-        await deleteUsers(ids);   
+        await Delete(ids);   
         expect(axios.delete).toHaveBeenCalledWith(`http://localhost:8081/removejob?ids=${ids}`);
       })
     })
@@ -83,7 +81,7 @@ describe("addUsers", () => {
         }
         
         axios.put.mockResolvedValueOnce(newEntry);
-        await editUser(newEntry);   
+        await Put(newEntry);   
         expect(axios.put).toHaveBeenCalledWith("http://localhost:8081/updatejob", newEntry); 
       })
     })
