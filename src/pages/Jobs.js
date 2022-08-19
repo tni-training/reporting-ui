@@ -36,8 +36,7 @@ function Jobs(props) {
     const handleCloseSnackbar = () => setSnackbar(false);
     
     useEffect(() => {
-        axios.get('http://localhost:8081/alljobs')
-          .then(response => {
+          Get().then(response => {
             const Data = response.data;
             setTable_data(Data);
           })
