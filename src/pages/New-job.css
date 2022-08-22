@@ -1,0 +1,42 @@
+.form{
+    display: grid;
+    grid-template-rows: max-content auto;
+    position: absolute;
+    left: 300px;
+    top: 20px;
+    border-radius: 8px;
+    padding: 4px 4px 0px 4px;
+    background-color:#ceecf5;
+    height: max-content;
+    width: max-content;
+    z-index: 1;
+    border: solid;
+}
+.form-first-part{
+display: grid;
+grid-template-columns: auto 20px;
+/* padding: 0px 0px 0px 355px; */
+}
+.form-title{
+    text-align: center;
+    font-size: large;
+    font-weight: bold;
+    padding: 4px;
+}
+.form-second-part{
+    display: grid;
+    grid-template-columns: max-content auto;
+}
+.title{
+    display: grid;
+    grid-template-rows: 45px 45px 45px 45px 45px 45px 45px;
+    padding: 12px;
+}
+.label-form{
+    padding: 5px;
+}
+.save-button{
+    display: flex;
+    flex-flow: row-reverse;
+    padding: 24px 10px 10px 0px;
+  }

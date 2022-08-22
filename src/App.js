@@ -1,6 +1,5 @@
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import './App.css';
-
 import SideBar from './components/SideBar';
 import Jobs from './pages/Jobs';
 import Sources from './pages/Sources';
@@ -13,11 +12,10 @@ function App() {
         <Router>
           <SideBar>
                     <Routes>
-                        <Route path='/Jobs' element={<Jobs/>} /> 
+                        <Route path='/Jobs' element={<Jobs/>} />
                         <Route path='/Sources' element={<Sources/>} />
                         <Route path='/Destination' element={<Destination/>} />
                         <Route path='/Update' element={<Update />} />
-                      
                     </Routes>
                     </SideBar>
 
@@ -25,5 +23,4 @@ function App() {
             </>
   );
 }
-
 export default App;

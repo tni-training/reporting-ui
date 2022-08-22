@@ -1,17 +1,18 @@
 .jobs-main{
     display: grid;
     grid-template-rows:  50px auto;
+
 }
 .jobs-first-part{
     display: grid;
-    grid-template-columns: auto 200px;
+    grid-template-columns: auto max-content;
     padding: 12px;
 }
-.title{
+/* .title{
   display: grid;
-  grid-template-rows: auto auto auto auto;
+  grid-template-rows: auto auto auto auto  ;
   padding:  24px 16px 12px 12px;
-}
+} */
 .jobs-button{
     background-color: rgb(19, 19, 78);
     color: white;
@@ -21,36 +22,37 @@
     background: #fff;
     color:black;
   }
-  .form{
-    
-    display: grid;
-    grid-template-columns: max-content auto;
-    position: absolute;
-    left: 350px;
-    top: 125px;
-    border-radius: 6px;
-    padding: 16px;
-    box-shadow: black;
-    background-color:#ceecf5
-    
-
-  }
   .table {
     font-family: arial, sans-serif;
     border-collapse: collapse;
     width: 100%;
+    padding: 12px;
+  
+  }
+  .table1{
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    padding: 12px;
+    opacity: 0.1;
   }
   
   .td, th {
     border: 1px solid #dddddd;
     text-align: left;
-    padding: 8px;
+    padding: 4px;
+    opacity: 1;
+    font-size: small;
   }
-  .save-button{
-    display: flex;
-    flex-flow: row-reverse;
-    padding: 12px 0px 0px 0px;
-  }
+ .entry{
+  font-size: small;
+ }
+
 .connections-table{
   padding: 16px;
 }
+.table-delete{
+  display: flex;
+  flex-direction: row-reverse;
+}
+
